@@ -1,37 +1,24 @@
-import Quote from './Quote'
+import ChildItem from './ChildItem'
 import './App.css'
 import { useEffect, useState } from 'react'
 
 function App () {
-  const [data, setData] = useState()
-  const [isLoading, setIsLoading] = useState(false)
+  const [data, setData] = useState([])
 
   useEffect(() => {
     const fetchMeAQuote = async () => {
-      const url = 'https://api.chucknorris.io/jokes/random'
+      const url = 'https://api.chucknorris.io/jokes/categories'
       const promise = await fetch(url).then(res => res.json())
-      setData({ ...promise, name: 'El profe Charly' })
-      setIsLoading(false)
+      setData(promise)
     }
-    setIsLoading(true)
     fetchMeAQuote()
   }, [])
 
-  useEffect(() => {
-    setData({
-      name: 'Hola mundo'
-    })
-  }, [])
-
-  const claroQueSiHijo = data => {
-    console.log(data)
-  }
+  const lista = data.map(value => <ChildItem key={value} value={value} />)
 
   return (
     <div className='App'>
-      {isLoading
-        ? 'Estoy agarrando señal, 1 momento....'
-        : data && <Quote data={data} quieroSubirInfo={claroQueSiHijo} />}
+      <header className='App-header'> {lista} </header>
     </div>
   )
 }
